@@ -19,16 +19,11 @@ interface DemoFile {
 }
 
 const demoFiles: DemoFile[] = [
-  { id: '001', name: 'Authentic Voice Sample 1', path: '/demo-audio/demo-001.flac', type: 'bonafide', description: 'Clean human voice recording' },
-  { id: '002', name: 'Spoofed Voice Sample 1', path: '/demo-audio/demo-002.flac', type: 'spoofed', description: 'AI-generated voice attack' },
-  { id: '003', name: 'Authentic Voice Sample 2', path: '/demo-audio/demo-003.flac', type: 'bonafide', description: 'Natural speech pattern' },
-  { id: '004', name: 'Spoofed Voice Sample 2', path: '/demo-audio/demo-004.flac', type: 'spoofed', description: 'Voice conversion attack' },
-  { id: '005', name: 'Authentic Voice Sample 3', path: '/demo-audio/demo-005.flac', type: 'bonafide', description: 'Genuine speaker identity' },
-  { id: '006', name: 'Spoofed Voice Sample 3', path: '/demo-audio/demo-006.flac', type: 'spoofed', description: 'Text-to-speech synthesis' },
-  { id: '007', name: 'Authentic Voice Sample 4', path: '/demo-audio/demo-007.flac', type: 'bonafide', description: 'Real human utterance' },
-  { id: '008', name: 'Spoofed Voice Sample 4', path: '/demo-audio/demo-008.flac', type: 'spoofed', description: 'Voice cloning attack' },
-  { id: '009', name: 'Authentic Voice Sample 5', path: '/demo-audio/demo-009.flac', type: 'bonafide', description: 'Natural voice recording' },
-  { id: '010', name: 'Spoofed Voice Sample 5', path: '/demo-audio/demo-010.flac', type: 'spoofed', description: 'Deep fake voice sample' },
+  { id: '001', name: 'English Voice Sample', path: '/demo-audio/demo-english.mp3', type: 'bonafide', description: 'English voice recording' },
+  { id: '002', name: 'Spanish Voice Sample', path: '/demo-audio/demo-spanish.mp3', type: 'bonafide', description: 'Spanish voice recording' },
+  { id: '003', name: 'French Voice Sample', path: '/demo-audio/demo-french.mp3', type: 'bonafide', description: 'French voice recording' },
+  { id: '004', name: 'German Voice Sample', path: '/demo-audio/demo-german.mp3', type: 'bonafide', description: 'German voice recording' },
+  { id: '005', name: 'Italian Voice Sample', path: '/demo-audio/demo-italian.mp3', type: 'bonafide', description: 'Italian voice recording' },
 ];
 
 const AudioDemo = () => {
