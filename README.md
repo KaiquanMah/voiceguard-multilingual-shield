@@ -1,4 +1,8 @@
 # VoiceGuard Multilingual Scam Shield
+* By: Kaiquan Mah
+* Submission to: Hack-Nation Global AI Hackathon 2025 (MIT Sloan AI Club), 9 to 10 August 2025
+* Challenge 3 Voice Scam Shield (Track: VC Big Bets - Cybersecurity)
+
 
 **Multilingual AI for Real-Time Call Scam Detection**
 
