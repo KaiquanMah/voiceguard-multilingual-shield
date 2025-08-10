@@ -13,19 +13,16 @@ interface Language {
 }
 
 const languages: Language[] = [
-  { code: "en", name: "English", flag: "🇺🇸", supported: true },
+  { code: "en-US", name: "English (US)", flag: "🇺🇸", supported: true },
   { code: "es", name: "Español", flag: "🇪🇸", supported: true },
   { code: "fr", name: "Français", flag: "🇫🇷", supported: true },
-  { code: "de", name: "Deutsch", flag: "🇩🇪", supported: true },
-  { code: "pt", name: "Português", flag: "🇧🇷", supported: true },
-  { code: "it", name: "Italiano", flag: "🇮🇹", supported: false },
-  { code: "zh", name: "中文", flag: "🇨🇳", supported: false },
-  { code: "ja", name: "日本語", flag: "🇯🇵", supported: false },
+  { code: "ms", name: "Bahasa Melayu", flag: "🇲🇾", supported: true },
+  { code: "zh-CN", name: "简体中文", flag: "🇨🇳", supported: true },
 ];
 
 const LanguageSelector = () => {
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(["en", "es", "fr"]);
-  const [detectedLanguage, setDetectedLanguage] = useState<string>("en");
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(["en-US", "es", "fr", "ms", "zh-CN"]);
+  const [detectedLanguage, setDetectedLanguage] = useState<string>("en-US");
 
   const toggleLanguage = (code: string) => {
     if (!languages.find(l => l.code === code)?.supported) return;
@@ -112,7 +109,7 @@ const LanguageSelector = () => {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setSelectedLanguages(["en"])}
+            onClick={() => setSelectedLanguages(["en-US"])}
             className="flex-1"
           >
             English Only
