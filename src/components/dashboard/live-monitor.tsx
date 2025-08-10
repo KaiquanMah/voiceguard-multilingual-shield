@@ -46,7 +46,7 @@ const LiveMonitor = () => {
 
   // Simulate live call data updates
   useEffect(() => {
-    if (!callData.isActive) return;
+    if (!callData.isActive || !isListening) return;
 
     const interval = setInterval(() => {
       setCallData(prev => ({
@@ -61,7 +61,7 @@ const LiveMonitor = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [callData.isActive]);
+  }, [callData.isActive, isListening]);
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -69,12 +69,38 @@ const LiveMonitor = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const toggleListening = () => {
+    setIsListening(!isListening);
+    
+    // Provide audio feedback
+    const utterance = new SpeechSynthesisUtterance(
+      isListening ? "Monitoring paused" : "Monitoring resumed"
+    );
+    utterance.rate = 0.9;
+    utterance.volume = 0.7;
+    speechSynthesis.speak(utterance);
+  };
+
   const startCall = () => {
     setCallData(prev => ({ ...prev, isActive: true, duration: 0 }));
+    
+    // Play demo audio announcement
+    const utterance = new SpeechSynthesisUtterance(
+      "Demo call started. Voice Scam Shield is now monitoring for threats."
+    );
+    utterance.rate = 0.9;
+    utterance.volume = 0.7;
+    speechSynthesis.speak(utterance);
   };
 
   const endCall = () => {
     setCallData(prev => ({ ...prev, isActive: false, duration: 0 }));
+    
+    // Play call end audio
+    const utterance = new SpeechSynthesisUtterance("Call ended. Voice Scam Shield monitoring stopped.");
+    utterance.rate = 0.9;
+    utterance.volume = 0.7;
+    speechSynthesis.speak(utterance);
   };
 
   return (
@@ -97,7 +123,7 @@ const LiveMonitor = () => {
               <Button
                 variant={isListening ? "default" : "secondary"}
                 size="sm"
-                onClick={() => setIsListening(!isListening)}
+                onClick={toggleListening}
                 className="gap-2"
               >
                 {isListening ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
