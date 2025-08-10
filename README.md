@@ -26,7 +26,7 @@ VoiceGuard is an advanced AI-powered system designed to detect and prevent phone
 - **Alert System**: Immediate notifications when suspicious activity is detected
 
 ### 🎧 Audio Processing
-- **High-Quality Transcription**: Powered by OpenAI Whisper for accurate speech-to-text
+- **High-Quality Transcription**: Powered by Elevenlabs for accurate speech-to-text
 - **Text-to-Speech**: ElevenLabs integration for multilingual voice synthesis
 - **Audio Demos**: Built-in demo system with sample recordings for testing
 
@@ -37,8 +37,7 @@ VoiceGuard is an advanced AI-powered system designed to detect and prevent phone
 - **UI Components**: shadcn/ui with Radix UI primitives
 - **Backend**: Supabase (Database, Authentication, Edge Functions)
 - **AI Services**: 
-  - ElevenLabs (Text-to-Speech, Voice Analysis)
-  - OpenAI Whisper (Speech-to-Text)
+  - ElevenLabs (Text-to-Speech, Speech-to-Text, Voice Analysis)
 - **Audio Processing**: Web Audio API, MediaRecorder API
 
 ## 📋 Prerequisites
@@ -46,7 +45,6 @@ VoiceGuard is an advanced AI-powered system designed to detect and prevent phone
 - Node.js 18+ and npm
 - Supabase account and project
 - ElevenLabs API key
-- OpenAI API key (for transcription)
 
 ## 🚀 Quick Start
 
@@ -69,7 +67,6 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # API Keys (configured in Supabase Edge Functions)
 ELEVENLABS_API_KEY=your_elevenlabs_api_key
-OPENAI_API_KEY=your_openai_api_key
 ```
 
 ### 3. Supabase Setup
