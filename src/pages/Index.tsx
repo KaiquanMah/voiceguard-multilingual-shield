@@ -29,8 +29,8 @@ const Index = () => {
                 <Shield className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-foreground">Voice Scam Shield</h1>
-                <p className="text-sm text-muted-foreground">Multilingual AI Call Protection</p>
+                <h1 className="text-xl font-bold text-foreground">VoiceGuard Scam Shield</h1>
+                <p className="text-sm text-muted-foreground">Identify scam calls in multiple languages</p>
               </div>
             </div>
             
