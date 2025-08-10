@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Phone, PhoneOff, Volume2, VolumeX, Shield, AlertTriangle, Play, Pause } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useElevenLabs } from "@/hooks/useElevenLabs";
-// import { getElevenLabsApiKey } from "@/utils/supabase";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CallData {
   isActive: boolean;
@@ -52,11 +52,25 @@ const LiveMonitor = () => {
     voiceId: "EXAVITQu4vr4xnSDxMaL" // Sarah voice
   });
 
-  // Load ElevenLabs API key on component mount (simplified for demo)
+  // Load ElevenLabs API key on component mount
   useEffect(() => {
-    // For now, we'll use a placeholder - user needs to add ELEVENLABS_API_KEY to Supabase secrets
-    // The getElevenLabsApiKey function will work once the API key is configured
-    setElevenLabsApiKey(null); // This will fallback to browser TTS
+    const fetchApiKey = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('get-elevenlabs-key');
+        if (error) {
+          console.error('Error fetching ElevenLabs API key:', error);
+          return;
+        }
+        if (data?.apiKey) {
+          setElevenLabsApiKey(data.apiKey);
+          console.log('ElevenLabs API key loaded successfully');
+        }
+      } catch (error) {
+        console.error('Error calling get-elevenlabs-key function:', error);
+      }
+    };
+    
+    fetchApiKey();
   }, []);
 
   // Simulate live call data updates
