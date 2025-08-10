@@ -2,13 +2,14 @@ import { useState } from "react";
 import { LiveMonitor } from "@/components/dashboard/live-monitor";
 import { AlertSystem } from "@/components/dashboard/alert-system";
 import { LanguageSelector } from "@/components/dashboard/language-selector";
+import { AudioDemo } from "@/components/demo/audio-demo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Shield, Phone, Globe, Settings, BarChart3, History } from "lucide-react";
+import { Shield, Phone, Globe, Settings, BarChart3, History, FileAudio } from "lucide-react";
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState<"monitor" | "history" | "settings">("monitor");
+  const [activeTab, setActiveTab] = useState<"monitor" | "demo" | "history" | "settings">("monitor");
 
   const stats = [
     { label: "Calls Protected", value: "1,247", icon: Shield, color: "safe" },
@@ -85,6 +86,14 @@ const Index = () => {
             Live Monitor
           </Button>
           <Button
+            variant={activeTab === "demo" ? "default" : "outline"}
+            onClick={() => setActiveTab("demo")}
+            className="gap-2"
+          >
+            <FileAudio className="h-4 w-4" />
+            Audio Demo
+          </Button>
+          <Button
             variant={activeTab === "history" ? "default" : "outline"}
             onClick={() => setActiveTab("history")}
             className="gap-2"
@@ -114,6 +123,8 @@ const Index = () => {
             </div>
           </div>
         )}
+
+        {activeTab === "demo" && <AudioDemo />}
 
         {activeTab === "history" && (
           <Card className="bg-card/30 backdrop-blur-sm border-border/50">
