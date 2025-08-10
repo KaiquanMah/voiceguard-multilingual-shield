@@ -19,11 +19,11 @@ interface DemoFile {
 }
 
 const demoFiles: DemoFile[] = [
-  { id: '001', name: 'English Voice Sample', path: '/demo-audio/demo-english.mp3', type: 'bonafide', description: 'English voice recording' },
-  { id: '002', name: 'Spanish Voice Sample', path: '/demo-audio/demo-spanish.mp3', type: 'bonafide', description: 'Spanish voice recording' },
-  { id: '003', name: 'French Voice Sample', path: '/demo-audio/demo-french.mp3', type: 'bonafide', description: 'French voice recording' },
-  { id: '004', name: 'German Voice Sample', path: '/demo-audio/demo-german.mp3', type: 'bonafide', description: 'German voice recording' },
-  { id: '005', name: 'Italian Voice Sample', path: '/demo-audio/demo-italian.mp3', type: 'bonafide', description: 'Italian voice recording' },
+  { id: '001', name: 'English Voice Sample', path: '/demo-audio/ElevenLabs_Text_to_Speech_audio_1_en_sharetxn.mp3', type: 'bonafide', description: 'English voice recording' },
+  { id: '002', name: 'Spanish Voice Sample', path: '/demo-audio/ElevenLabs_Text_to_Speech_audio_2_es_sharetxn.mp3', type: 'bonafide', description: 'Spanish voice recording' },
+  { id: '003', name: 'French Voice Sample', path: '/demo-audio/ElevenLabs_Text_to_Speech_audio_3_fr_sharetxn.mp3', type: 'bonafide', description: 'French voice recording' },
+  { id: '004', name: 'Malay Voice Sample', path: '/demo-audio/ElevenLabs_Text_to_Speech_audio_4_my_sharetxn.mp3', type: 'bonafide', description: 'Malay voice recording' },
+  { id: '005', name: 'Chinese Voice Sample', path: '/demo-audio/ElevenLabs_Text_to_Speech_audio_5_cn_sharetxn.mp3', type: 'bonafide', description: 'Chinese voice recording' },
 ];
 
 const AudioDemo = () => {
