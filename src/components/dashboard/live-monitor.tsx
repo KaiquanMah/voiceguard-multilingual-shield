@@ -4,8 +4,10 @@ import { StatusIndicator } from "@/components/ui/status-indicator";
 import { RiskMeter } from "@/components/ui/risk-meter";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Phone, PhoneOff, Volume2, VolumeX, Shield, AlertTriangle } from "lucide-react";
+import { Phone, PhoneOff, Volume2, VolumeX, Shield, AlertTriangle, Play, Pause } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useElevenLabs } from "@/hooks/useElevenLabs";
+// import { getElevenLabsApiKey } from "@/utils/supabase";
 
 interface CallData {
   isActive: boolean;
@@ -43,6 +45,19 @@ const LiveMonitor = () => {
   });
 
   const [isListening, setIsListening] = useState(true);
+  const [elevenLabsApiKey, setElevenLabsApiKey] = useState<string | null>(null);
+  
+  const elevenLabs = useElevenLabs({ 
+    apiKey: elevenLabsApiKey || undefined,
+    voiceId: "EXAVITQu4vr4xnSDxMaL" // Sarah voice
+  });
+
+  // Load ElevenLabs API key on component mount (simplified for demo)
+  useEffect(() => {
+    // For now, we'll use a placeholder - user needs to add ELEVENLABS_API_KEY to Supabase secrets
+    // The getElevenLabsApiKey function will work once the API key is configured
+    setElevenLabsApiKey(null); // This will fallback to browser TTS
+  }, []);
 
   // Simulate live call data updates
   useEffect(() => {
@@ -101,6 +116,10 @@ const LiveMonitor = () => {
     utterance.rate = 0.9;
     utterance.volume = 0.7;
     speechSynthesis.speak(utterance);
+  };
+
+  const speakTranscript = () => {
+    elevenLabs.speak(callData.transcript, 'en');
   };
 
   return (
@@ -244,7 +263,28 @@ const LiveMonitor = () => {
       {callData.isActive && (
         <Card className="bg-card/50 backdrop-blur-sm border-border/50">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Live Transcript</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base">Live Transcript</CardTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={speakTranscript}
+                disabled={elevenLabs.isPlaying}
+                className="gap-2"
+              >
+                {elevenLabs.isPlaying ? (
+                  <>
+                    <Pause className="h-4 w-4" />
+                    Playing...
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-4 w-4" />
+                    Read Aloud
+                  </>
+                )}
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="p-4 rounded-lg bg-muted/50 min-h-[120px]">
