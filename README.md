@@ -1,10 +1,10 @@
-# VoiceGuard Multilingual Scam Shield
+# VoiceGuard Scam Shield
 * By: Kaiquan Mah
 * Submission to: Hack-Nation Global AI Hackathon 2025 (MIT Sloan AI Club), 9 to 10 August 2025
 * Challenge 3 Voice Scam Shield (Track: VC Big Bets - Cybersecurity)
 
 
-**Multilingual AI for Real-Time Call Scam Detection**
+**Identify Scam Calls in Multiple Languages**
 
 VoiceGuard is an advanced AI-powered system designed to detect and prevent phone scams in real-time across multiple languages. Using cutting-edge voice analysis, risk assessment, and multilingual processing capabilities, VoiceGuard helps protect users from fraudulent calls by analyzing voice authenticity, detecting suspicious patterns, and providing real-time alerts.
 
