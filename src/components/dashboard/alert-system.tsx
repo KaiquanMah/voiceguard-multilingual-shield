@@ -40,12 +40,24 @@ const AlertSystem = () => {
 
   const [isVoiceAlertsEnabled, setIsVoiceAlertsEnabled] = useState(true);
 
-  // Simulate text-to-speech alerts
+  // Manual text-to-speech for alerts
   const speakAlert = (alert: Alert) => {
-    if (!isVoiceAlertsEnabled || alert.autoSpoken) return;
+    if (!isVoiceAlertsEnabled) return;
     
     const utterance = new SpeechSynthesisUtterance(
       `Security alert: ${alert.title}. ${alert.message}`
+    );
+    utterance.rate = 0.9;
+    utterance.volume = 0.7;
+    speechSynthesis.speak(utterance);
+  };
+
+  // Auto-speak only for critical alerts
+  const autoSpeakAlert = (alert: Alert) => {
+    if (!isVoiceAlertsEnabled || alert.autoSpoken) return;
+    
+    const utterance = new SpeechSynthesisUtterance(
+      `Critical security alert: ${alert.title}. ${alert.message}`
     );
     utterance.rate = 0.9;
     utterance.volume = 0.7;
@@ -63,7 +75,7 @@ const AlertSystem = () => {
     );
     
     criticalAlerts.forEach(alert => {
-      setTimeout(() => speakAlert(alert), 1000);
+      setTimeout(() => autoSpeakAlert(alert), 1000);
     });
   }, [alerts, isVoiceAlertsEnabled]);
 
