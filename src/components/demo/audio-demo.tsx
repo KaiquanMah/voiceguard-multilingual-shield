@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
+import { useConversation } from "@11labs/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatusIndicator } from "@/components/ui/status-indicator";
 import { RiskMeter } from "@/components/ui/risk-meter";
-import { Play, Pause, Square, Volume2, FileAudio, RefreshCw } from "lucide-react";
+import { Play, Pause, Square, Volume2, FileAudio, RefreshCw, Mic, MicOff } from "lucide-react";
 import { useElevenLabs } from "@/hooks/useElevenLabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -39,10 +40,51 @@ const AudioDemo = () => {
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [riskScore, setRiskScore] = useState(0);
   const [analysisComplete, setAnalysisComplete] = useState(false);
+  const [elevenLabsApiKey, setElevenLabsApiKey] = useState<string | null>(null);
+  const [agentUrl, setAgentUrl] = useState<string | null>(null);
   
   const audioRef = useRef<HTMLAudioElement>(null);
   const { toast } = useToast();
   const elevenLabs = useElevenLabs();
+
+  // ElevenLabs Conversational AI for transcription
+  const conversation = useConversation({
+    onMessage: (message) => {
+      if (message.source === 'user' && message.message) {
+        setTranscription(prev => prev + ' ' + message.message);
+        setAnalysisComplete(true);
+      }
+    },
+    onError: (error) => {
+      console.error('ElevenLabs conversation error:', error);
+      toast({
+        title: "Transcription Error",
+        description: "ElevenLabs transcription failed",
+        variant: "destructive",
+      });
+    }
+  });
+
+  // Load ElevenLabs API key on component mount
+  useEffect(() => {
+    const fetchApiKey = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('get-elevenlabs-key');
+        if (error) {
+          console.error('Error fetching ElevenLabs API key:', error);
+          return;
+        }
+        if (data?.apiKey) {
+          setElevenLabsApiKey(data.apiKey);
+          console.log('ElevenLabs API key loaded successfully');
+        }
+      } catch (error) {
+        console.error('Error calling get-elevenlabs-key function:', error);
+      }
+    };
+    
+    fetchApiKey();
+  }, []);
 
   // Simulate risk analysis based on file type
   useEffect(() => {
@@ -93,44 +135,58 @@ const AudioDemo = () => {
   };
 
   const startTranscription = async () => {
-    if (!selectedFile) return;
+    if (!elevenLabsApiKey) {
+      toast({
+        title: "API Key Missing",
+        description: "ElevenLabs API key not found",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setIsTranscribing(true);
     setTranscription('');
 
     try {
-      // Convert audio to base64 for transcription
-      const response = await fetch(selectedFile.path);
-      const arrayBuffer = await response.arrayBuffer();
-      const base64Audio = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-
-      const { data, error } = await supabase.functions.invoke('transcribe-audio', {
-        body: { audio: base64Audio, filename: selectedFile.name }
-      });
-
+      // For demo purposes, we'll create a signed URL for a simple agent
+      // In production, you'd have a pre-configured agent
+      const { data, error } = await supabase.functions.invoke('create-elevenlabs-agent');
+      
       if (error) {
         throw new Error(error.message);
       }
 
-      if (data?.text) {
-        setTranscription(data.text);
-        setAnalysisComplete(true);
+      if (data?.signedUrl) {
+        setAgentUrl(data.signedUrl);
+        // Start the conversation with proper parameter structure
+        await conversation.startSession({ agentId: data.agentId || "default" });
+        toast({
+          title: "Live Transcription Started",
+          description: "Speak into your microphone for real-time transcription",
+        });
       }
     } catch (error) {
       console.error('Transcription error:', error);
       toast({
         title: "Transcription Error",
-        description: "Could not transcribe audio. Using demo text.",
+        description: "Could not start ElevenLabs transcription",
         variant: "destructive",
       });
       
       // Fallback demo transcription
       const demoText = selectedFile.type === 'bonafide' 
-        ? "Hello, this is a genuine voice recording for authentication purposes."
-        : "This is an AI-generated voice attempting to impersonate a real person.";
+        ? "Demo: This is a genuine voice recording for authentication purposes."
+        : "Demo: This appears to be an AI-generated voice attempting impersonation.";
       setTranscription(demoText);
       setAnalysisComplete(true);
     } finally {
+      setIsTranscribing(false);
+    }
+  };
+
+  const stopTranscription = async () => {
+    if (conversation.status === 'connected') {
+      await conversation.endSession();
       setIsTranscribing(false);
     }
   };
@@ -232,12 +288,26 @@ const AudioDemo = () => {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={startTranscription}
-                disabled={isTranscribing}
+                onClick={conversation.status === 'connected' ? stopTranscription : startTranscription}
+                disabled={isTranscribing && conversation.status !== 'connected'}
                 className="gap-2"
               >
-                {isTranscribing ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Volume2 className="h-4 w-4" />}
-                Transcribe
+                {conversation.status === 'connected' ? (
+                  <>
+                    <MicOff className="h-4 w-4" />
+                    Stop Live
+                  </>
+                ) : isTranscribing ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 animate-spin" />
+                    Connecting...
+                  </>
+                ) : (
+                  <>
+                    <Mic className="h-4 w-4" />
+                    Live Transcribe
+                  </>
+                )}
               </Button>
             </div>
 
