@@ -26,7 +26,8 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					glow: 'hsl(var(--primary-glow))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -51,6 +52,21 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				safe: {
+					DEFAULT: 'hsl(var(--safe))',
+					foreground: 'hsl(var(--safe-foreground))',
+					glow: 'hsl(var(--safe-glow))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))',
+					glow: 'hsl(var(--warning-glow))'
+				},
+				danger: {
+					DEFAULT: 'hsl(var(--danger))',
+					foreground: 'hsl(var(--danger-foreground))',
+					glow: 'hsl(var(--danger-glow))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -84,11 +100,49 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-safe': {
+					'0%, 100%': { boxShadow: '0 0 0 0 hsl(var(--safe) / 0.4)' },
+					'50%': { boxShadow: '0 0 0 8px hsl(var(--safe) / 0)' }
+				},
+				'pulse-warning': {
+					'0%, 100%': { boxShadow: '0 0 0 0 hsl(var(--warning) / 0.4)' },
+					'50%': { boxShadow: '0 0 0 8px hsl(var(--warning) / 0)' }
+				},
+				'pulse-danger': {
+					'0%, 100%': { boxShadow: '0 0 0 0 hsl(var(--danger) / 0.4)' },
+					'50%': { boxShadow: '0 0 0 8px hsl(var(--danger) / 0)' }
+				},
+				'glow': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.5' }
+				},
+				'scan': {
+					'0%': { transform: 'translateY(-100%)' },
+					'100%': { transform: 'translateY(100vh)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-safe': 'pulse-safe 2s infinite',
+				'pulse-warning': 'pulse-warning 1.5s infinite',
+				'pulse-danger': 'pulse-danger 1s infinite',
+				'glow': 'glow 2s ease-in-out infinite',
+				'scan': 'scan 3s linear infinite'
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-safe': 'var(--gradient-safe)',
+				'gradient-warning': 'var(--gradient-warning)',
+				'gradient-danger': 'var(--gradient-danger)',
+				'gradient-cyber': 'var(--gradient-cyber)'
+			},
+			boxShadow: {
+				'safe': 'var(--shadow-safe)',
+				'warning': 'var(--shadow-warning)',
+				'danger': 'var(--shadow-danger)',
+				'cyber': 'var(--shadow-cyber)'
 			}
 		}
 	},
