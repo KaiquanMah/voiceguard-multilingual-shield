@@ -81,25 +81,44 @@ const AudioDemo = () => {
     fetchApiKey();
   }, []);
 
-  // Simulate risk analysis based on file type
+  // Reset audio state and simulate risk analysis when file changes
   useEffect(() => {
     if (selectedFile) {
+      // Reset audio state
+      setIsPlaying(false);
+      setCurrentTime(0);
+      setDuration(0);
+      
+      // Reset analysis state
       setRiskScore(selectedFile.type === 'spoofed' ? 85 + Math.random() * 10 : 15 + Math.random() * 10);
       setAnalysisComplete(false);
       setTranscription('');
+      
+      // Stop current audio if playing
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+      
+      console.log('File changed to:', selectedFile.name);
     }
   }, [selectedFile]);
 
   const handlePlayPause = () => {
     if (!audioRef.current) return;
 
+    console.log('handlePlayPause called, current isPlaying:', isPlaying);
+    console.log('Audio element paused state:', audioRef.current.paused);
+
     if (isPlaying) {
       audioRef.current.pause();
     } else {
       audioRef.current.play().catch(error => {
+        console.error('Audio play error:', error);
+        setIsPlaying(false);
         toast({
           title: "Audio Error",
-          description: "Could not play audio file. Please ensure the FLAC file exists.",
+          description: "Could not play audio file. Please ensure the MP3 file exists.",
           variant: "destructive",
         });
       });
@@ -309,11 +328,24 @@ const AudioDemo = () => {
             <audio
               ref={audioRef}
               src={selectedFile.path}
-              onPlay={() => setIsPlaying(true)}
-              onPause={() => setIsPlaying(false)}
+              onPlay={() => {
+                console.log('Audio onPlay event fired');
+                setIsPlaying(true);
+              }}
+              onPause={() => {
+                console.log('Audio onPause event fired');
+                setIsPlaying(false);
+              }}
               onTimeUpdate={handleTimeUpdate}
               onLoadedMetadata={handleLoadedMetadata}
-              onEnded={handleEnded}
+              onEnded={() => {
+                console.log('Audio onEnded event fired');
+                handleEnded();
+              }}
+              onError={(e) => {
+                console.error('Audio error:', e);
+                setIsPlaying(false);
+              }}
               preload="metadata"
             />
           </CardContent>
